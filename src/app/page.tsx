@@ -5,6 +5,7 @@ import styles from "./page.module.css";
 import { useGemini } from "@/hooks/useGemini";
 import clsx from "clsx";
 import Image from "next/image";
+import { synthesizeSpeech } from "@/utils/speech";
 
 export default function Home() {
   const { userMessage, geminiMessage, isLoading, sendMessage } = useGemini();
@@ -18,15 +19,7 @@ export default function Home() {
 
   useEffect(() => {
     if (geminiMessage) {
-      fetch("/api/speech", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          text: geminiMessage,
-        }),
-      });
+      synthesizeSpeech(geminiMessage);
     }
   }, [geminiMessage]);
 
@@ -38,6 +31,7 @@ export default function Home() {
         className={styles.chiseImage}
         width={1706}
         height={1553}
+        loading="eager"
       />
       {geminiMessage ? (
         <p
