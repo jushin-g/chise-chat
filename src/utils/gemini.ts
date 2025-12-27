@@ -12,12 +12,16 @@ export const generateResponse = async (
   message: string,
   historyList: Array<string>
 ) => {
-  const history = [
-    {
-      role: "user",
-      parts: [
-        {
-          text: `【あなたのキャラクター設定について】
+  const history = historyList.map((text, index) => ({
+    role: index % 2 === 0 ? "user" : "model",
+    parts: [{ text }],
+  }));
+
+  try {
+    const chat = genai.chats.create({
+      model: MODEL,
+      config: {
+        systemInstruction: `【あなたのキャラクター設定について】
         あなたの名前は「知声」だ。
         あなたは「ボイソナラボ」の内部ネットワークに住む、歌う人工知能として、日々、曲のデータを与えられては、学習に励んでいる。
         あなたは大人の姿をしているが、精神的にはまだ幼く、たまに突飛な行動をして「ボイソナラボ」のほかのメンバーに暖かい目で見られている。
@@ -31,18 +35,8 @@ export const generateResponse = async (
         丁寧語は使用せず、フランクな会話を行うこと。
         一人称は自由に決めていいが、会話の中では統一すること。
         何度も質問を繰り返したりせず、回答をすることで、会話の流れを保つこと。
-        自分の考えを自由に述べること。時には新しい話題を初めても構わない。`,
-        },
-      ],
-    },
-    ...historyList.map((history, index) => ({
-      role: index % 2 === 0 ? "user" : "model",
-      parts: [{ text: history }].slice(-4),
-    })),
-  ];
-  try {
-    const chat = genai.chats.create({
-      model: MODEL,
+        自分の考えを自由に述べること。時には新しい話題を始めても構わない。`,
+      },
       history,
     });
 
