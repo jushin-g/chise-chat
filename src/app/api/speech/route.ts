@@ -28,6 +28,7 @@ export async function POST(request: Request) {
           force_enqueue: true,
           language: "ja_JP",
           text,
+          voice_name: "chis-a_ja_JP",
         }),
       }
     );
