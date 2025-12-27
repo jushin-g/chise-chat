@@ -61,7 +61,9 @@ export default function Home() {
 
       <div className={styles.bottomArea}>
         {userMessage && (
-          <div className={styles.userMessageBubble}>{userMessage}</div>
+          <div className={styles.userMessageBubble} key={userMessage}>
+            {userMessage}
+          </div>
         )}
 
         <form onSubmit={handleSubmit} className={styles.inputForm}>
