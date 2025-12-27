@@ -1,11 +1,10 @@
 "use server";
 
-// The client gets the API key from the environment variable `GEMINI_API_KEY`.
+import { GoogleGenAI } from "@google/genai";
+
 const genai = new GoogleGenAI({
   apiKey: process.env.GEMINI_API_KEY,
 });
-
-import { GoogleGenAI } from "@google/genai";
 
 const MODEL = "gemini-2.5-flash";
 

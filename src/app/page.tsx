@@ -3,7 +3,6 @@
 import { useEffect, useState } from "react";
 import styles from "./page.module.css";
 import { useGemini } from "@/hooks/useGemini";
-import { fetchSpeechSynthesis } from "@/utils/speech";
 import clsx from "clsx";
 
 export default function Home() {
@@ -18,10 +17,14 @@ export default function Home() {
 
   useEffect(() => {
     if (geminiMessage) {
-      fetchSpeechSynthesis(geminiMessage).then((blob) => {
-        const url = URL.createObjectURL(blob);
-        const audio = new Audio(url);
-        audio.play().catch((e) => console.error("Audio play failed", e));
+      fetch("/api/speech", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          text: geminiMessage,
+        }),
       });
     }
   }, [geminiMessage]);
